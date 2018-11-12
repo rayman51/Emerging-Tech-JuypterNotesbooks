@@ -35,7 +35,8 @@ Distribution, which is a free and open-source Python distribution with lots of p
 Once you have installed Anaconda, open a command line and navagate to where you want the notebook to be saved and run the command "jupyter notebook" and the Jupyter home page will open in your browser, then click the new button on the top right side, select "python 3" and a new notebook will open.
 
 
-##Useful Links
+## Useful Links:
+
 [Visual-Studio-Code](https://code.visualstudio.com/)
 
 [Cmder-Console-Emulator](http://cmder.net/)
