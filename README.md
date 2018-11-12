@@ -37,6 +37,9 @@ Once you have installed Anaconda, open a command line and navagate to where you 
 
 ##Useful Links
 [Visual-Studio-Code](https://code.visualstudio.com/)
+
 [Cmder-Console-Emulator](http://cmder.net/)
+
 [Anaconda-Download](https://www.anaconda.com/download/)
+
 [Jupyter-Notebooks](https://jupyter.readthedocs.io/en/latest/)
