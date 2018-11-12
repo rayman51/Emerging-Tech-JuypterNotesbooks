@@ -29,6 +29,7 @@ learning algorithm and the MNIST dataset.
 A Jupyter Notebook explaining how the
 above Python script works and discussing its performance.
 
+## Starting a note book: 
 In order to run Jupyter Notbooks I had to install the [Anaconda](https://www.anaconda.com/what-is-anaconda/)
 Distribution, which is a free and open-source Python distribution with lots of pre-installed packages including Jupyter.
 
