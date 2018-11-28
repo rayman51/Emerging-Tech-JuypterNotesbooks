@@ -1,10 +1,17 @@
 #  https://raw.githubusercontent.com/ianmcloughlin/jupyter-teaching-notebooks/master/mnist.ipynb
 
-import keras as kr
 import gzip
+import os.path
+import tkinter as tk
+from random import randint
+from tkinter import filedialog
+
+import keras as kr
+import matplotlib.pyplot as plt
 import numpy as np
 import sklearn.preprocessing as pre
-import os.path
+from keras.preprocessing import image
+
 # imports needed
 
 model = kr.models.Sequential()
@@ -60,26 +67,63 @@ test_img = ~np.array(list(test_img[16:])).reshape(10000, 784).astype(np.uint8)
 test_lbl =  np.array(list(test_lbl[ 8:])).astype(np.uint8)
 
 outcome = (encoder.inverse_transform(model.predict(test_img)) == test_lbl).sum()
-print("outcome is", outcome)
+print("\nModel  is", outcome/100,"% Accurate\n")
+print("\nModel has been created or loaded into memory")
+
 
 #model.predict(test_img[5:6])
 #plt.imshow(test_img[5].reshape(28, 28), cmap='gray'
-# 
-print("==========================")
 
-from random import randint
-for i in range(10):
-    print("Test Case No:", i+1)
-    print("==========================")
-    x = randint(0, 9999)
-    print("Index: ", x)
-    print("Result array: ")
-    test = model.predict(test_img[x:x+1])
-    # Prints the array
-    print(test)
-    print("The number was : ", test_lbl[x:x+1])
-    # Get the maximum value from the machine predictions
-    pred_result = test.argmax(axis=1)
+def newmethod791():
+    amm = int(input(" How many tests would you like to run ? "))
+    from random import randint
+    for i in range(amm):
+        print("Test Number : ", i+1,"\n")
+        x = randint(0, 9999)
 
-    print("Program prediction is : ",  pred_result)
-    print("==========================")
+        print("The random index: ", x, "\n")
+        print("The result array: ")
+        test = model.predict(test_img[x:x+1])
+        # Print the result array
+        print(test, "\n")
+        # Get the maximum value from the machine predictions
+        pred_result = test.argmax(axis=1)
+
+        print("program predicted : =>> ",  pred_result)
+        print(" number is : =>> ", test_lbl[x:x+1])
+        print("===================")
+
+def loadImage():
+    root = tk.Tk()
+    root.withdraw()
+    #https://stackoverflow.com/questions/9319317/quick-and-easy-file-dialog-in-python
+    file_path = filedialog.askopenfilename()# opens file select window
+    img = image.load_img(path=file_path,color_mode = "grayscale",target_size=(28,28,1))
+    image1 = np.array(list(image.img_to_array(img))).reshape(1, 784).astype(np.uint8) / 255.0
+    # shapes array 
+    plt.imshow(img)
+    plt.show()
+    # plots and displays image
+    test = model.predict(image1)
+    # runs test of image on model
+    print("program has predicted : ", test.argmax(axis=1))
+#https://towardsdatascience.com/basics-of-image-classification-with-keras-43779a299c8b
+
+print("Load an image on your system")
+
+opt=True
+while opt:
+    print("============================")
+    print("""        1 to load image
+        2 to run test
+        3 to exit """)
+    opt= input(" What would you like to do ? ")
+    print("============================")
+    #https://stackoverflow.com/questions/19964603/creating-a-menu-in-python
+
+    if opt == "1":
+        loadImage()
+    elif opt == "2":
+        newmethod791()
+    elif opt == "3":
+        exit()
