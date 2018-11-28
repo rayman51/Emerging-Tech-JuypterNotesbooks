@@ -4,6 +4,7 @@ import keras as kr
 import gzip
 import numpy as np
 import sklearn.preprocessing as pre
+import os.path
 # imports needed
 
 model = kr.models.Sequential()
@@ -38,9 +39,16 @@ outputs = encoder.transform(train_lbl)
 print(train_lbl[0], outputs[0])
 
 #for i in range(10):
-   # print(i, encoder.transform([i]))
+   #print(i, encoder.transform([i]))
+# prints out the arrays
 
-model.fit(inputs, outputs, epochs=15, batch_size=100)
+if os.path.isfile('data/model.h5'): 
+        model = kr.models.load_model('data/model.h5')
+# if model already exist uses it
+else:
+    model.fit(inputs, outputs, epochs=15, batch_size=100)
+    model.save("data/model.h5")
+    #makes model and saves it 
 
 with gzip.open('data/t10k-images-idx3-ubyte.gz', 'rb') as f:
     test_img = f.read()
@@ -51,7 +59,8 @@ with gzip.open('data/t10k-labels-idx1-ubyte.gz', 'rb') as f:
 test_img = ~np.array(list(test_img[16:])).reshape(10000, 784).astype(np.uint8)
 test_lbl =  np.array(list(test_lbl[ 8:])).astype(np.uint8)
 
-(encoder.inverse_transform(model.predict(test_img)) == test_lbl).sum()
+outcome = (encoder.inverse_transform(model.predict(test_img)) == test_lbl).sum()
+print("outcome is", outcome)
 
 #model.predict(test_img[5:6])
 #plt.imshow(test_img[5].reshape(28, 28), cmap='gray'
