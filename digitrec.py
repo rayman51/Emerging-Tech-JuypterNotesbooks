@@ -1,18 +1,20 @@
 #  https://raw.githubusercontent.com/ianmcloughlin/jupyter-teaching-notebooks/master/mnist.ipynb
 
-import gzip
-import os.path
-import tkinter as tk
-from random import randint
-from tkinter import filedialog
+import gzip # used for unzipping
+import os.path # used to load existing model
+import tkinter as tk # used to load img
+from random import randint # generate random values
+from tkinter import filedialog #for uploading image files
 
-import keras as kr
+import keras as kr # for creating the network
 import matplotlib.pyplot as plt
-import numpy as np
-import sklearn.preprocessing as pre
+import numpy as np # for shaping the data 
+import sklearn.preprocessing as pre # for classification and binary encoding 
 from keras.preprocessing import image
 
 # imports needed
+
+# https://keras.io/getting-started/sequential-model-guide/
 
 model = kr.models.Sequential()
 
@@ -37,8 +39,9 @@ with gzip.open('data/train-labels-idx1-ubyte.gz', 'rb') as f:
 train_img = ~np.array(list(train_img[16:])).reshape(60000, 28, 28).astype(np.uint8)
 train_lbl =  np.array(list(train_lbl[ 8:])).astype(np.uint8)
 
-inputs = train_img.reshape(60000, 784)/255
+inputs = train_img.reshape(60000, 784)/255 # converts into a single array
 # For encoding categorical variables.
+# encode each label for binary outputs
 encoder = pre.LabelBinarizer()
 encoder.fit(train_lbl)
 outputs = encoder.transform(train_lbl)
@@ -56,13 +59,14 @@ else:
     model.fit(inputs, outputs, epochs=15, batch_size=100)
     model.save("data/model.h5")
     #makes model and saves it 
-
+    
+# ungzips test images and labels
 with gzip.open('data/t10k-images-idx3-ubyte.gz', 'rb') as f:
     test_img = f.read()
 
 with gzip.open('data/t10k-labels-idx1-ubyte.gz', 'rb') as f:
     test_lbl = f.read()
-    
+# stores them into memory    
 test_img = ~np.array(list(test_img[16:])).reshape(10000, 784).astype(np.uint8)
 test_lbl =  np.array(list(test_lbl[ 8:])).astype(np.uint8)
 
@@ -74,31 +78,31 @@ print("\nModel has been created or loaded into memory")
 #model.predict(test_img[5:6])
 #plt.imshow(test_img[5].reshape(28, 28), cmap='gray'
 
-def newmethod791():
+def randomTests():
     amm = int(input(" How many tests would you like to run ? "))
     from random import randint
     for i in range(amm):
-        print("Test Number : ", i+1,"\n")
+        print("Test Case : ", i+1,"\n")
         x = randint(0, 9999)
-
-        print("The random index: ", x, "\n")
-        print("The result array: ")
+        print("Test Case index: ", x, "\n")
+        print("Test Case array: ")
         test = model.predict(test_img[x:x+1])
-        # Print the result array
+        # print the array and index of the test case
         print(test, "\n")
-        # Get the maximum value from the machine predictions
         pred_result = test.argmax(axis=1)
 
-        print("program predicted : =>> ",  pred_result)
-        print(" number is : =>> ", test_lbl[x:x+1])
+        print("program has predicted :  ",  pred_result)
+        print(" number is :  ", test_lbl[x:x+1])
         print("===================")
 
 def loadImage():
     root = tk.Tk()
     root.withdraw()
     #https://stackoverflow.com/questions/9319317/quick-and-easy-file-dialog-in-python
+    
     file_path = filedialog.askopenfilename()# opens file select window
     img = image.load_img(path=file_path,color_mode = "grayscale",target_size=(28,28,1))
+    #loads image into PIL format
     image1 = np.array(list(image.img_to_array(img))).reshape(1, 784).astype(np.uint8) / 255.0
     # shapes array 
     plt.imshow(img)
@@ -124,6 +128,8 @@ while opt:
     if opt == "1":
         loadImage()
     elif opt == "2":
-        newmethod791()
+        randomTests()
     elif opt == "3":
         exit()
+    else: 
+        print("Invalid Entry")
