@@ -50,4 +50,4 @@ Once you have installed Anaconda, open a command line and navagate to where you 
 This project is licensed under the MIT License - see the LICENSE file for details
 
 ## Acknowledgments
-Thanks to Dr. Ian McCloughlin for the course work, assistance and tutorials on completing the project
+Thanks to Dr. Ian McLoughlin for the course work, assistance and tutorials on completing the project
